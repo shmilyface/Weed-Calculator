@@ -1,2 +1,0 @@
-# Weed-Calculator
-Weed-Calc
