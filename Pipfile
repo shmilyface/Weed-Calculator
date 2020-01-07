@@ -12,7 +12,6 @@ gunicorn = "*"
 plotly = "*"
 pandas = "*"
 numpy = "*"
-math = "*"
 
 [requires]
 python_version = "3"
