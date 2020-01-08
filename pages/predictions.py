@@ -848,7 +848,8 @@ column1 = dbc.Col(
             max=100,
             step=0.2,
             value=10,
-        )
+        ),
+        html.Div(id='slider-output-container')
     ],
     md=4
 )
