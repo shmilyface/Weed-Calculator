@@ -843,11 +843,18 @@ column1 = dbc.Col(
             value= 18.0
         ), 
         dcc.Slider(
-            id='my-slider',
+            id='weight',
             min=0,
-            max=100,
-            step=0.2,
-            value=10,
+            max=3.5,
+            step=0.1,
+            marks={
+            0: '0 g',
+            0.3: '0.3 g',
+            1: '1 g',
+            3: '3 g',
+            3.5: '3.5 g'
+            },
+            value=0.3,
         ),
         html.Div(id='slider-output-container')
     ],
@@ -856,17 +863,26 @@ column1 = dbc.Col(
 
 column2 = dbc.Col(
     [
-
+        html.Div(id='dosage-content', className='lead', style={'font-weight': 'bold'})
     ]
 )
 
 @app.callback(
     Output('slider-output-container', 'children'),
+    [Input('weight', 'value')])
+
+def update_output(value):
+    return 'You have selected {} g'.format(value)
+
+
+@app.callback(
+    Output('dosage-content', 'children'),
     [
         Input('strain', 'value'),
-        Input('my-slider', 'value')
-        ])
-def update_output(value):
-    return 'You have selected "{}"'.format(value)
+        Input('weight', 'value')
+        ]
+        )
+def calc(strain, weight):
+    return 10*strain*weight
 
 layout = dbc.Row([column1, column2])
