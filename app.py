@@ -55,4 +55,13 @@ meta_tags=[
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets, meta_tags=meta_tags)
 app.config.suppress_callback_exceptions = True # see https://dash.plot.ly/urls
 app.title = 'Potency Calculator' # appears in browser title bar
+app.layout = html.Div([
+    dcc.Slider(
+    id='my-slider',
+    min=0,
+    max=3.5,
+    step=0.5,
+    value=10
+    ),
+])
 server = app.server
