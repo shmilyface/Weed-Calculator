@@ -847,6 +847,13 @@ column1 = dbc.Col(
             min=0,
             max=3.5,
             step=0.1,
+            marks={
+            0: '0 g',
+            0.3: '0.3 g',
+            1: '1 g',
+            3: '3 g',
+            3.5: '3.5 g'
+            },
             value=0.3,
         ),
         html.Div(id='slider-output-container')
