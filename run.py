@@ -11,10 +11,10 @@ from pages import index, predictions
 
 # Navbar docs: https://dash-bootstrap-components.opensource.faculty.ai/l/components/navbar
 navbar = dbc.NavbarSimple(
-    brand='Potency Calculator',
+    brand='Med Cabinet',
     brand_href='/',
     children=[
-        dbc.NavItem(dcc.Link('Predictions', href='/predictions', className='nav-link'))
+        dbc.NavItem(dcc.Link('Potency Calculator', href='/potency-calculator', className='nav-link'))
     ],
     sticky='top',
     color='primary',
@@ -64,7 +64,7 @@ app.layout = html.Div([
 def display_page(pathname):
     if pathname == '/':
         return index.layout
-    elif pathname == '/predictions':
+    elif pathname == '/potency-calculator':
         return predictions.layout
     else:
         return dcc.Markdown('## Page not found')
