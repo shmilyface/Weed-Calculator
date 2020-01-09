@@ -33,14 +33,10 @@ column1 = dbc.Col(
 
             """
         ),
-        dcc.Link(dbc.Button('I am 21', color='primary'), href='/potency-calculator')
+        dcc.Link(dbc.Button('I am 18 or Older', color='primary'), href='/potency-calculator')
     ],
     md=4,
 )
-
-gapminder = px.data.gapminder()
-fig = px.scatter(gapminder.query("year==2007"), x="gdpPercap", y="lifeExp", size="pop", color="continent",
-           hover_name="country", log_x=True, size_max=60)
 
 column2 = dbc.Col(
     [
