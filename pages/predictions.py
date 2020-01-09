@@ -5,6 +5,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import pandas as pd
+import plotly.graph_objects as go
 
 # Imports from this application
 from app import app
@@ -875,7 +876,11 @@ column1 = dbc.Col(
 
 column2 = dbc.Col(
     [
-        html.Div(id='dosage-content', className='lead', style={'font-weight': 'bold'})
+        html.Div(id='dosage-content', className='lead', style={'font-weight': 'bold'}),
+        html.Div([
+            dcc.Graph(id='burnoff-content')
+        ]),
+
     ]
 )
 
@@ -901,5 +906,60 @@ def calc(strain, weight):
     potency = 10*(thc*weight)
     potency = float(potency)
     return 'Max THC {0:.2f} mg'.format(potency)
+
+@app.callback(
+    Output('burnoff-content', 'figure'),
+    [
+        Input('strain', 'value'),
+        Input('weight', 'value')
+        ]
+    )
+#calculator
+def update_graph1(strain, weight):
+
+    def calc_max(strain, weight):
+        df = pd.read_csv('Clean_Data/thc.csv')
+        con = df['strain'] == strain
+        thc = (df[con]['High'] + df[con]['Low'])/2
+        potency = 10*(thc*weight)
+        potency = float(potency)
+        return potency
+
+    def burnoff(potency):
+        inhaled = potency * 0.4
+        exhaled = potency * 0.6
+        return (inhaled, exhaled)
+
+    def x(strain, weight):
+        maxthc = calc_max(strain, weight)
+        burn = burnoff(maxthc)
+        return burn 
+
+    thcburn= x(strain, weight)
+    
+    fig1 = go.Figure()
+    fig1.add_trace(go.Bar(
+        y=['joint or pipe'],
+        x=[thcburn[0]],
+        name='Estimated THC Inhaled',
+        orientation='h',
+        marker=dict(
+            color='rgb(127, 191, 63, 0.3)',
+            line=dict(color='rgb(75, 180, 68, 0.7)', width=3)
+        )
+    ))
+    fig1.add_trace(go.Bar(
+        y=['joint or pipe'],
+        x=[thcburn[1]],
+        name='Estimated THC Loss Due to Heating',
+        orientation='h',
+        marker=dict(
+            color='rgba(58, 71, 80, 0.3)',
+            line=dict(color='rgba(58, 71, 80, 1.0)', width=3)
+        )
+    ))
+    fig1.update_layout(barmode='stack')
+
+    return fig1
 
 layout = dbc.Row([column1, column2])
