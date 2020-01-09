@@ -16,9 +16,13 @@ column1 = dbc.Col(
         dcc.Markdown(
             """
         
-            ## Predictions
-
-            Your instructions: How to use your app to get new predictions.
+            ## Instructions
+            *Select a strain from the dropdown menu*
+            *Use the slider to select the amount of dry flower (in grams) being used for smoking.*
+            These calculations do **not** include THC lost from exhaling, 
+            as the length of time smoke is in lungs can affect retention and effects.
+            Always err on the side of caution when testing new strains, 
+            start small if you're worried about adverse affects.
 
             """
         ),        
