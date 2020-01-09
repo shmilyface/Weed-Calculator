@@ -31,6 +31,11 @@ column1 = dbc.Col(
 
             **Use at your own risk.**
 
+            
+            **For more information on responsible dosing:**
+            
+            https://www.consumeresponsibly.org/limit/
+
             """
         ),
         dcc.Link(dbc.Button('I am 18 or Older', color='primary'), href='/potency-calculator')
