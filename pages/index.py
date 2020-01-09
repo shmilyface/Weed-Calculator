@@ -26,7 +26,7 @@ column1 = dbc.Col(
 
             """
         ),
-        dcc.Link(dbc.Button('I am 21', color='primary'), href='/predictions')
+        dcc.Link(dbc.Button('I am 21', color='primary'), href='/potency-calculator')
     ],
     md=4,
 )
@@ -37,7 +37,7 @@ fig = px.scatter(gapminder.query("year==2007"), x="gdpPercap", y="lifeExp", size
 
 column2 = dbc.Col(
     [
-        dcc.Graph(figure=fig),
+        html.Img(src='assets/add-weed-tFkScFEdh7c-unsplash.jpg', className='img-fluid')
     ]
 )
 
