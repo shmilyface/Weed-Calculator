@@ -11,11 +11,11 @@ from pages import index, predictions
 
 # Navbar docs: https://dash-bootstrap-components.opensource.faculty.ai/l/components/navbar
 navbar = dbc.NavbarSimple(
-    brand='Med Cabinet',
+    brand='Potency Calculator',
     brand_href='/',
-    children=[
-        dbc.NavItem(dcc.Link('Potency Calculator', href='/potency-calculator', className='nav-link'))
-    ],
+    #children=[
+        #dbc.NavItem(dcc.Link('Potency Calculator', href='/potency-calculator', className='nav-link'))
+    #],
     sticky='top',
     color='primary',
     light=True,
@@ -31,16 +31,19 @@ navbar = dbc.NavbarSimple(
 footer = dbc.Container(
     dbc.Row(
         dbc.Col(
-            html.P(
+            [
+                html.P(
                 [
                     html.Span('Med Cabinet 3 (The most awesome MedCab Team)', className='mr-2'),
                     #html.A(html.I(className='fas fa-envelope-square mr-1'), href='mailto:<you>@<provider>.com'),
                     html.A(html.I(className='fab fa-github-square mr-1'), href='https://github.com/MedCabinet/Weed-Calculator'),
-                    #html.A(html.I(className='fab fa-linkedin mr-1'), href='https://www.linkedin.com/in/<you>/'),
+                    #html.A('Return to Med Cabinet', href='https://medcabinetog.netlify.com/'),
                     #html.A(html.I(className='fab fa-twitter-square mr-1'), href='https://twitter.com/<you>'),
                 ],
                 className='lead'
-            )
+            ),
+            html.P(html.A('Return to Med Cabinet', href='https://medcabinetog.netlify.com/'))
+            ]
         )
     )
 )
