@@ -1009,7 +1009,7 @@ def update_graph2(strain, weight):
     y_data = [
         'Very Experienced/High Tolerance',
         'Some Experience/Medium Tolerance',
-        'Beginner/No Tolerance'
+        'Beginner/Low Tolerance'
         ]
 
     fig2 = go.Figure()
@@ -1025,7 +1025,7 @@ def update_graph2(strain, weight):
                 ),
                 name=top_labels[i],
                 legendgroup=i,
-                showlegend=(yd == 'Beginner/No Tolerance')
+                showlegend=(yd == 'Beginner/Low Tolerance')
                 ))
     
     fig2.update_layout(
