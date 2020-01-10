@@ -854,35 +854,38 @@ column1 = dbc.Col(
         ],
             className='mb-2',
             value= '22'
-        ), 
+        ),
+        dcc.Markdown(
+            """
+            The average American joint weighs 0.3g
+
+            """
+        ),
         dcc.Slider(
             id='weight',
             min=0,
-            max=3.5,
+            max=1,
             step=0.1,
             marks={
             0: '0 g',
             0.3: '0.3 g',
-            1.7: '1.7 g',
-            3: '3 g',
-            3.5: '3.5 g'
+            0.5: '0.5 g',
+            0.7: '0.7 g',
+            1: '1 g'
             },
             value=0.3,
         ),
-        html.Div(id='slider-output-container')
-    ],
-    md=4
-)
-
-column2 = dbc.Col(
-    [
-        html.Div(id='dosage-content', className='lead', style={'font-weight': 'bold'}),
+        html.Div(id='slider-output-container', style={'font-weight': 'bold', 'text-align': 'center', 'padding': 50}),
+        html.Div(id='dosage-content', className='lead', style={'font-weight': 'bolder', 'text-align': 'center', 'font-size': 'large'}),
         html.Div([
             dcc.Graph(id='burnoff-content')
         ]),
-
+        html.Div([
+            dcc.Graph(id='howhigh-content')
+        ]),
     ]
 )
+
 
 @app.callback(
     Output('slider-output-container', 'children'),
@@ -958,8 +961,137 @@ def update_graph1(strain, weight):
             line=dict(color='rgba(58, 71, 80, 1.0)', width=3)
         )
     ))
+
+    fig1.update_xaxes(ticksuffix='mg')
     fig1.update_layout(barmode='stack')
 
     return fig1
 
-layout = dbc.Row([column1, column2])
+@app.callback(
+    Output('howhigh-content', 'figure'),
+    [
+        Input('strain', 'value'),
+        Input('weight', 'value')
+        ]
+    )
+#calculator
+def update_graph2(strain, weight):
+
+    def calc_max(strain, weight):
+        df = pd.read_csv('Clean_Data/thc.csv')
+        con = df['strain'] == strain
+        thc = (df[con]['High'] + df[con]['Low'])/2
+        potency = 10*(thc*weight)
+        potency = float(potency)
+        return potency
+
+    def burnoff(potency):
+        inhaled = potency * 0.4
+        exhaled = potency * 0.6
+        return (inhaled, exhaled)
+
+    def x(strain, weight):
+        maxthc = calc_max(strain, weight)
+        burn = burnoff(maxthc)
+        return burn 
+
+    thcburn= x(strain, weight)
+
+    top_labels = ['Light Effect', 'Moderate Effect', 'Strong Effect']
+
+    colors = ['rgba(122, 120, 168, 0.8)', 'rgba(71, 58, 131, 0.8)',
+              'rgba(38, 24, 74, 0.8)']
+
+    x_data = [[25, 55, 20],
+             [10, 15, 75],
+             [5, 5, 90]]
+
+    y_data = [
+        'Very Experienced/High Tolerance',
+        'Some Experience/Medium Tolerance',
+        'Beginner/No Tolerance'
+        ]
+
+    fig2 = go.Figure()
+    
+    for i in range(0, len(x_data[0])):
+        for xd, yd in zip(x_data, y_data):
+            fig2.add_trace(go.Bar(
+                x=[xd[i]], y=[yd],
+                orientation='h',
+                marker=dict(
+                    color=colors[i],
+                    line=dict(color='rgb(248, 248, 249)', width=1)
+                ),
+                name=top_labels[i],
+                legendgroup=i,
+                showlegend=(yd == 'Beginner/No Tolerance')
+                ))
+    
+    fig2.update_layout(
+        xaxis=dict(
+            showgrid=True,
+            showline=True,
+            showticklabels=True,
+            dtick = 5,
+            zeroline=False,
+            domain=[0.15, 1]
+        ),
+        yaxis=dict(
+            showgrid=False,
+            showline=False,
+            showticklabels=False,
+            zeroline=False,
+        ),
+        barmode='stack',
+        paper_bgcolor='rgb(248, 248, 255)',
+        plot_bgcolor='rgb(248, 248, 255)',
+        margin=dict(l=120, r=10, t=140, b=80),
+        showlegend=True,
+    )
+
+    annotations = []
+
+    for yd, xd in zip(y_data, x_data):
+        # labeling the y-axis
+        annotations.append(dict(
+            xref='paper', yref='y',
+            x=0.14, y=yd,
+            xanchor='right',
+            text=str(yd),
+            font=dict(
+                family='Arial', size=14,
+                color='rgb(67, 67, 67)'),
+                showarrow=False, align='right'))
+            
+    fig2.update_layout(annotations=annotations)
+
+    fig2.add_shape(
+            # Line Vertical
+            go.layout.Shape(
+                type="line",
+                x0=thcburn[0],
+                y0=-0.5,
+                x1=thcburn[0],
+                y1=2.8,
+                line=dict(
+                    color='black',
+                    width=3
+                )
+    ))
+
+    fig2.add_trace(go.Scatter(
+        x=[thcburn[0]],
+        y=[4],
+        text=["Estimated Intesity"],
+        mode="text",
+        showlegend=False
+    ))
+
+    fig2.update_xaxes(range=[0, 100], ticksuffix="mg")
+
+
+    return fig2
+
+
+layout = dbc.Row([column1])
