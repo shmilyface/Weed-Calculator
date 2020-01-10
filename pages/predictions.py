@@ -963,7 +963,11 @@ def update_graph1(strain, weight):
     ))
 
     fig1.update_xaxes(ticksuffix='mg')
-    fig1.update_layout(barmode='stack')
+    fig1.update_layout(barmode='stack', annotations=[dict(xref='paper', yref='y',
+      x=0.25, y=0, xanchor='right', text=f'<b>{thcburn[0]:.1f}mg</b>', font=dict(
+      family='Arial', size=21,
+      color='white'),
+      showarrow=False, align='right')])
 
     return fig1
 
