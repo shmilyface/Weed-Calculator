@@ -948,7 +948,7 @@ def update_graph1(strain, weight):
         orientation='h',
         marker=dict(
             color='rgb(127, 191, 63, 0.3)',
-            line=dict(color='rgb(75, 180, 68, 0.7)', width=3)
+            line=dict(color='rgb(58, 71, 80, 1.0)', width=3)
         )
     ))
     fig1.add_trace(go.Bar(
