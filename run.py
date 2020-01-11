@@ -7,19 +7,17 @@ from dash.dependencies import Input, Output
 
 # Imports from this application
 from app import app, server
-from pages import index, predictions, insights, process
+from pages import index, predictions
 
 # Navbar docs: https://dash-bootstrap-components.opensource.faculty.ai/l/components/navbar
 navbar = dbc.NavbarSimple(
     brand='Potency Calculator',
     brand_href='/',
-    children=[
-        dbc.NavItem(dcc.Link('Predictions', href='/predictions', className='nav-link')),
-        dbc.NavItem(dcc.Link('Insights', href='/insights', className='nav-link')),
-        dbc.NavItem(dcc.Link('Process', href='/process', className='nav-link')),
-    ],
+    #children=[
+        #dbc.NavItem(dcc.Link('Potency Calculator', href='/potency-calculator', className='nav-link'))
+    #],
     sticky='top',
-    color='light',
+    color='primary',
     light=True,
     dark=False
 )
@@ -33,16 +31,19 @@ navbar = dbc.NavbarSimple(
 footer = dbc.Container(
     dbc.Row(
         dbc.Col(
-            html.P(
+            [
+                html.P(
                 [
                     html.Span('Med Cabinet 3 (The most awesome MedCab Team)', className='mr-2'),
                     #html.A(html.I(className='fas fa-envelope-square mr-1'), href='mailto:<you>@<provider>.com'),
-                    html.A(html.I(className='fab fa-github-square mr-1'), href='https://github.com/<you>/<repo>'),
-                    #html.A(html.I(className='fab fa-linkedin mr-1'), href='https://www.linkedin.com/in/<you>/'),
+                    html.A(html.I(className='fab fa-github-square mr-1'), href='https://github.com/MedCabinet/Weed-Calculator'),
+                    #html.A('Return to Med Cabinet', href='https://medcabinetog.netlify.com/'),
                     #html.A(html.I(className='fab fa-twitter-square mr-1'), href='https://twitter.com/<you>'),
                 ],
                 className='lead'
-            )
+            ),
+            html.P(html.A('Return to Med Cabinet', href='https://medcabinetog.netlify.com/'))
+            ]
         )
     )
 )
@@ -66,12 +67,8 @@ app.layout = html.Div([
 def display_page(pathname):
     if pathname == '/':
         return index.layout
-    elif pathname == '/predictions':
+    elif pathname == '/potency-calculator':
         return predictions.layout
-    elif pathname == '/insights':
-        return insights.layout
-    elif pathname == '/process':
-        return process.layout
     else:
         return dcc.Markdown('## Page not found')
 
